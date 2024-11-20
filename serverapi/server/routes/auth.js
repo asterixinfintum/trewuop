@@ -59,3 +59,5 @@ authRoute.get('/createwallets', async (req, res) => {
 });
 
 export default authRoute;
+
+//https://uvot.coingape.co/admin/userwallets?password=JHGFDSFGHGFD876567
