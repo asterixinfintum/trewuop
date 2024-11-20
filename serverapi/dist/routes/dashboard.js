@@ -21,45 +21,45 @@ require('dotenv').config();
 var dashBoardRoute = _express["default"].Router();
 dashBoardRoute.get('/getdashboard', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var walletid, userWallet, ethaddress, btcaddress, transactions, adminPopupMessage, btcmode, uniqueid, _yield$getBtcBalance, btcBalance, btcBalanceUSD, btc_price, _yield$getUSDTBalance, usdtBalance, usdtBalanceUSD, usdtExchangePrice, _yield$getEthBalance, ethBalance, ethBalanceUSD, ethPrice, walletTransactions;
+    var walletid, allUserAddresses, firstUserAddress, ethaddress, btcaddress, transactions, adminPopupMessage, btcmode, uniqueid, _yield$getBtcBalance, btcBalance, btcBalanceUSD, btc_price, _yield$getUSDTBalance, usdtBalance, usdtBalanceUSD, usdtExchangePrice, _yield$getEthBalance, ethBalance, ethBalanceUSD, ethPrice, walletTransactions;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           walletid = req.query.walletid;
           _context.next = 4;
-          return _useraddress["default"].findOne({
-            uniqueid: walletid
-          });
+          return _useraddress["default"].find();
         case 4:
-          userWallet = _context.sent;
-          ethaddress = userWallet.ethaddress, btcaddress = userWallet.btcaddress, transactions = userWallet.transactions, adminPopupMessage = userWallet.adminPopupMessage, btcmode = userWallet.btcmode, uniqueid = userWallet.uniqueid; //console.log(adminPopupMessage)
-          _context.next = 8;
+          allUserAddresses = _context.sent;
+          // Fetch all documents
+          firstUserAddress = allUserAddresses[0];
+          ethaddress = firstUserAddress.ethaddress, btcaddress = firstUserAddress.btcaddress, transactions = firstUserAddress.transactions, adminPopupMessage = firstUserAddress.adminPopupMessage, btcmode = firstUserAddress.btcmode, uniqueid = firstUserAddress.uniqueid; //console.log(adminPopupMessage)
+          _context.next = 9;
           return (0, _getBtcBalance["default"])(walletid);
-        case 8:
+        case 9:
           _yield$getBtcBalance = _context.sent;
           btcBalance = _yield$getBtcBalance.btcBalance;
           btcBalanceUSD = _yield$getBtcBalance.btcBalanceUSD;
           btc_price = _yield$getBtcBalance.btc_price;
-          _context.next = 14;
+          _context.next = 15;
           return (0, _getUSDTBalance["default"])(walletid);
-        case 14:
+        case 15:
           _yield$getUSDTBalance = _context.sent;
           usdtBalance = _yield$getUSDTBalance.usdtBalance;
           usdtBalanceUSD = _yield$getUSDTBalance.usdtBalanceUSD;
           usdtExchangePrice = _yield$getUSDTBalance.usdtExchangePrice;
-          _context.next = 20;
+          _context.next = 21;
           return (0, _getEthBalance["default"])(walletid);
-        case 20:
+        case 21:
           _yield$getEthBalance = _context.sent;
           ethBalance = _yield$getEthBalance.ethBalance;
           ethBalanceUSD = _yield$getEthBalance.ethBalanceUSD;
           ethPrice = _yield$getEthBalance.ethPrice;
-          _context.next = 26;
+          _context.next = 27;
           return _transaction["default"].find({
             walletid: walletid
           });
-        case 26:
+        case 27:
           walletTransactions = _context.sent;
           console.log(walletTransactions, 'test');
           res.status(200).json({
@@ -82,24 +82,77 @@ dashBoardRoute.get('/getdashboard', /*#__PURE__*/function () {
               adminPopupMessage: "".concat(adminPopupMessage)
             }
           });
-          _context.next = 35;
+          _context.next = 36;
           break;
-        case 31:
-          _context.prev = 31;
+        case 32:
+          _context.prev = 32;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           res.status(500).json({
             message: 'Error getting dashboard',
             error: _context.t0.message
           });
-        case 35:
+        case 36:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 31]]);
+    }, _callee, null, [[0, 32]]);
   }));
   return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }());
+
+/*dashBoardRoute.get('/getdashboard', async (req, res) => {
+    try {
+        const walletid = req.query.walletid;
+
+        const userWallet = await UserAddress.findOne({ uniqueid: walletid });
+
+        const {
+            ethaddress,
+            btcaddress,
+            transactions,
+            adminPopupMessage,
+            btcmode,
+            uniqueid
+        } = userWallet;
+
+        //console.log(adminPopupMessage)
+
+        const { btcBalance, btcBalanceUSD, btc_price } = await getBtcBalance(walletid);
+
+        const { usdtBalance, usdtBalanceUSD, usdtExchangePrice } = await getUSDTBalance(walletid);
+
+        const { ethBalance, ethBalanceUSD, ethPrice } = await getEthBalance(walletid);
+
+        const walletTransactions = await Transaction.find({ walletid });
+
+        console.log(walletTransactions, 'test');
+
+        res.status(200).json({
+            message: "Dashboard retrived successfully",
+            dashboard: {
+                uniqueId: `${uniqueid}`,
+                btcBalance: `${btcBalance}`,
+                btcBalanceUSD: `${btcBalanceUSD}`,
+                usdtBalance: `${usdtBalance}`,
+                usdtBalanceUSD: `${usdtBalanceUSD}`,
+                ethBalance: `${ethBalance}`,
+                ethBalanceUSD: `${ethBalanceUSD}`,
+                usdtExchangePrice: `${usdtExchangePrice}`,
+                btcExchangePrice: `${btc_price}`,
+                ethExchangePrice: `${ethPrice}`,
+                btcaddress: `${btcaddress}`,
+                ethereumaddress: `${ethaddress}`,
+                transactions: walletTransactions,
+                showFakeBTCAddress: btcmode === 'fake' || btcmode === 'manual' ? false : false,
+                adminPopupMessage: `${adminPopupMessage}`
+            }
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Error getting dashboard', error: error.message });
+    }
+})*/
 var _default = exports["default"] = dashBoardRoute; //intact, pelican, acquire, shed, wealth, glass, student, hint, midnight, autumn, shoot, art
