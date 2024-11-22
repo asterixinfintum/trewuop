@@ -70,6 +70,7 @@ export default {
       '~/assets/scss/jumbotron.scss',
       '~/assets/scss/announcement.scss',
       '~/assets/scss/landing.scss',
+      '~/assets/scss/home.scss',
       '~/assets/scss/landingoffers.scss',
       '~/assets/scss/curvedoffer.scss',
       '~/assets/scss/footer.scss',
@@ -86,6 +87,8 @@ export default {
       '~/assets/scss/documentdisplay.scss',
       '~/assets/scss/interactransfer.scss',
       '~/assets/scss/addmoney.scss',
+      '~/assets/scss/cardbase.scss',
+      '~/assets/scss/uhomegrid.scss',
     ],
     hoistUseStatements: true
   },
