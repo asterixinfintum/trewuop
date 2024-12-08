@@ -31,20 +31,6 @@ services:
     build: ./chat
     environment:
       - PORT=8002
-
-  walletapi:
-    container_name: walletapi
-    restart: always
-    build: ./serverapi
-    environment:
-      - PORT=8003
-
-  walletadmin:
-    container_name: walletadmin
-    restart: always
-    build: ./admin
-    environment:
-      - PORT=8004
       
   nuxt-app:
     build: ./ui
