@@ -1,13 +1,13 @@
 .button {
     color: $font-white;
-    background: $button-blue;
+    background: orangered;
     outline: none;
     border: none;
     font-weight: 600;
     cursor: pointer;
     border-radius: .375rem;
     font-size: #{scaleValue(18)};
-    padding: #{scaleValue(15)} #{scaleValue(25)};
+    padding: #{scaleValue(15)} #{scaleValue(16)};
 
     display: flex;
     align-items: center;
@@ -43,12 +43,12 @@
 
 
     &.orange-btn {
-        background: $primary-orange;
+        background: $deep-blue;
     }
 
     &.orange-btn-faint {
-        background: rgba($primary-orange, .4);
-        color: $primary-orange;
+        background: rgba($deep-blue, .4);
+        color: $font-white;
     }
 
     &.grey {

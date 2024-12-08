@@ -89,6 +89,7 @@ export default {
       '~/assets/scss/addmoney.scss',
       '~/assets/scss/cardbase.scss',
       '~/assets/scss/uhomegrid.scss',
+      '~/assets/scss/hook.scss',
     ],
     hoistUseStatements: true
   },

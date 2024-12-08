@@ -5,3 +5,5 @@ playground/
 playgr/
 defaultt.conf
 Dockerfile
+sitename.js
+ui/pages/indexold2.vue
