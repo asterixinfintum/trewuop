@@ -1,30 +1,32 @@
 <template>
   <div>
     <div class="hook">
-      <div class="hook__header">
+      <div class="hook__header" id="header">
         <div class="hook__header--body">
           <div class="hook__header--topbody">
             <div class="hook__header--topbodylogo">
               <figure>
                 <img />
               </figure>
-              <p><span>CTCI</span> <span>Capital</span></p>
+              <p>
+                <span>{{ logoOne }}</span> <span>{{ logoTwo }}</span>
+              </p>
             </div>
 
             <div class="hook__header--topbodymenu">
-              <div class="hook__header--topbodymenuitem">
+              <div class="hook__header--topbodymenuitem" @click="scrollToTarget('contact_support')">
                 <figure>
                   <img src="@/assets/imgs/message-icon.png" />
                 </figure>
                 <span>Contact</span>
               </div>
-              <div class="hook__header--topbodymenuitem">
+              <div class="hook__header--topbodymenuitem" @click="got_to_toute('signin')">
                 <figure>
                   <img src="@/assets/imgs/signin-icon.png" />
                 </figure>
                 <span>Sign in</span>
               </div>
-              <div class="hook__header--topbodymenuitem">
+              <div class="hook__header--topbodymenuitem" @click="got_to_toute('signup')">
                 <figure>
                   <img src="@/assets/imgs/signin-icon.png" />
                 </figure>
@@ -34,10 +36,10 @@
           </div>
           <div class="hook__header--bottombody">
             <div class="hook__header--bottombodymenu">
-              <span class="current">Home</span>
-              <span>Credit Cards</span>
-              <span>Features</span>
-              <span>Shortcodes</span>
+              <span @click="scrollToTarget('header')" :class="{current: current_div === 'header'}">Home</span>
+              <span @click="scrollToTarget('services')" :class="{current: current_div === 'services'}">Services</span>
+              <span @click="scrollToTarget('features')" :class="{current: current_div === 'features'}">Features</span>
+              <span @click="scrollToTarget('about')" :class="{current: current_div === 'about'}">About Us</span>
             </div>
           </div>
         </div>
@@ -57,7 +59,7 @@
               </p>
             </div>
 
-            <div class="hook__jumbotrontext--auth">
+            <div class="hook__jumbotrontext--auth" @click="got_to_toute('signup')">
               <button class="button">Sign Up</button>
             </div>
           </div>
@@ -84,7 +86,7 @@
             Presenting products and services that are right for you
           </h1>
 
-          <div class="hook__featuresgrid">
+          <div class="hook__featuresgrid" id="services">
             <div class="hook__featuresgrid--box">
               <figure>
                 <img src="@/assets/imgs/feature-1.png" />
@@ -96,7 +98,7 @@
               </p>
 
               <div class="hook__featuresgrid--btn">
-                <nuxt-link to="/target-page" class="btn">Apply online</nuxt-link>
+                <nuxt-link to="/auth/signup" class="btn">Apply online</nuxt-link>
               </div>
             </div>
             <div class="hook__featuresgrid--box">
@@ -132,7 +134,7 @@
           </div>
         </div>
 
-        <div class="hook__section two">
+        <div class="hook__section two" id="features">
           <h1 class="hook__sectionheader">Business Banking</h1>
 
           <div class="hook__padding">
@@ -194,7 +196,7 @@
                     budget. Watch your savings grow without lifting a finger.
                   </p>
 
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -215,7 +217,7 @@
                     money based on your spending habits, helping you achieve your
                     financial goals faster.
                   </p>
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -235,7 +237,7 @@
                     Our dedicated team is available anytime to answer questions, resolve
                     issues, or guide you through our banking services with expert care.
                   </p>
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -255,7 +257,7 @@
                     Grow your wealth with tailored investment solutions designed by
                     experts to match your financial goals and risk tolerance.
                   </p>
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -275,7 +277,7 @@
                     Bank securely from anywhere with our state-of-the-art online platform,
                     offering instant deposits, transfers, and bill payments.
                   </p>
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -292,7 +294,7 @@
                     Stay informed and in control with a full view of your financial
                     health, including spending trends, savings progress, and more.
                   </p>
-                  <button class="button orange-btn curved">Learn more</button>
+                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
                 </div>
               </div>
             </div>
@@ -310,7 +312,7 @@
                   Stay informed and in control with a full view of your financial health,
                   including spending trends, savings progress, and more.
                 </p>
-                <button class="button orange-btn curved">Learn more</button>
+                <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
               </div>
 
               <figure class="hook__bluebox--img">
@@ -320,7 +322,7 @@
           </div>
         </div>
 
-        <div class="hook__section four">
+        <div class="hook__section four" id="about">
           <div>
             <div class="hook__footer">
               <div class="hook__padding">
@@ -364,8 +366,8 @@
                     <div class="hook__footer--aboutheader">
                       <figure></figure>
                       <h2>
-                        <span>CTCI</span>
-                        <span>Capital</span>
+                        <span>{{ logoOne }}</span>
+                        <span>{{ logoTwo }}</span>
                       </h2>
                     </div>
                     <div class="hook__footer--abouttext">
@@ -377,7 +379,7 @@
                     </div>
                   </div>
 
-                  <div class="hook__footer--email">support@ctcicapital.com</div>
+                  <div class="hook__footer--email" id="contact_support">{{ suppoxtrd }}</div>
                 </div>
               </div>
             </div>
@@ -389,16 +391,32 @@
 </template>
 
 <script>
+import sitenamemixin from "@/mixins/sitename";
+
 export default {
+  mixins: [sitenamemixin],
   data() {
     return {
       current: 1,
       current_jumbotron_img: 1,
       current_midmenucard: 1,
+      current_div: "header",
     };
   },
   methods: {
-    slider_run() {},
+    scrollToTarget(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      } else {
+        console.error(`Element with ID '${id}' not found.`);
+      }
+
+      this.current_div = id;
+    },
+    got_to_toute(route) {
+      this.$router.push(`/auth/${route}`);
+    },
     toggle__current_jumbotron_img() {
       if (this.current_jumbotron_img < 3) {
         this.current_jumbotron_img = this.current_jumbotron_img + 1;

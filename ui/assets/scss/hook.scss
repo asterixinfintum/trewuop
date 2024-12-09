@@ -1,6 +1,7 @@
 $padding-side-hook: #{scaleValue(100)};
 
 
+
 .hook {
     color: $font-black;
     position: relative;
@@ -67,6 +68,9 @@ $padding-side-hook: #{scaleValue(100)};
             cursor: pointer;
             display: flex;
             align-items: center;
+
+            cursor: pointer;
+            text-decoration: none !important;
 
 
 
@@ -497,4 +501,14 @@ $padding-side-hook: #{scaleValue(100)};
             }
         }
     }
+}
+
+.hook__header--topbodymenuitem {
+    text-decoration: none;
+}
+
+.hook__header--topbodymenuitem:hover,
+.hook__header--topbodymenuitem:focus,
+.hook__header--topbodymenuitem:active {
+    text-decoration: none;
 }
