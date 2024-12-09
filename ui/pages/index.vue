@@ -1,7 +1,13 @@
 <template>
   <div>
     <div class="hook">
-      <div class="hook__header" id="header">
+      <div
+        class="hook__header"
+        id="header"
+        :class="{
+          mobile_menu_open: mobile_menu_open,
+        }"
+      >
         <div class="hook__header--body">
           <div class="hook__header--topbody">
             <div class="hook__header--topbodylogo">
@@ -13,8 +19,17 @@
               </p>
             </div>
 
+            <div class="hook__headerburger" @click="toggle_mobile_menu_open">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
             <div class="hook__header--topbodymenu">
-              <div class="hook__header--topbodymenuitem" @click="scrollToTarget('contact_support')">
+              <div
+                class="hook__header--topbodymenuitem"
+                @click="scrollToTarget('contact_support')"
+              >
                 <figure>
                   <img src="@/assets/imgs/message-icon.png" />
                 </figure>
@@ -36,10 +51,26 @@
           </div>
           <div class="hook__header--bottombody">
             <div class="hook__header--bottombodymenu">
-              <span @click="scrollToTarget('header')" :class="{current: current_div === 'header'}">Home</span>
-              <span @click="scrollToTarget('services')" :class="{current: current_div === 'services'}">Services</span>
-              <span @click="scrollToTarget('features')" :class="{current: current_div === 'features'}">Features</span>
-              <span @click="scrollToTarget('about')" :class="{current: current_div === 'about'}">About Us</span>
+              <span
+                @click="scrollToTarget('header')"
+                :class="{ current: current_div === 'header' }"
+                >Home</span
+              >
+              <span
+                @click="scrollToTarget('services')"
+                :class="{ current: current_div === 'services' }"
+                >Services</span
+              >
+              <span
+                @click="scrollToTarget('features')"
+                :class="{ current: current_div === 'features' }"
+                >Features</span
+              >
+              <span
+                @click="scrollToTarget('about')"
+                :class="{ current: current_div === 'about' }"
+                >About Us</span
+              >
             </div>
           </div>
         </div>
@@ -196,7 +227,12 @@
                     budget. Watch your savings grow without lifting a finger.
                   </p>
 
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -217,7 +253,12 @@
                     money based on your spending habits, helping you achieve your
                     financial goals faster.
                   </p>
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -237,7 +278,12 @@
                     Our dedicated team is available anytime to answer questions, resolve
                     issues, or guide you through our banking services with expert care.
                   </p>
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -257,7 +303,12 @@
                     Grow your wealth with tailored investment solutions designed by
                     experts to match your financial goals and risk tolerance.
                   </p>
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -277,7 +328,12 @@
                     Bank securely from anywhere with our state-of-the-art online platform,
                     offering instant deposits, transfers, and bill payments.
                   </p>
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -294,7 +350,12 @@
                     Stay informed and in control with a full view of your financial
                     health, including spending trends, savings progress, and more.
                   </p>
-                  <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                  <button
+                    class="button orange-btn curved"
+                    @click="got_to_toute('signup')"
+                  >
+                    Sign up
+                  </button>
                 </div>
               </div>
             </div>
@@ -312,7 +373,9 @@
                   Stay informed and in control with a full view of your financial health,
                   including spending trends, savings progress, and more.
                 </p>
-                <button class="button orange-btn curved" @click="got_to_toute('signup')">Sign up</button>
+                <button class="button orange-btn curved" @click="got_to_toute('signup')">
+                  Sign up
+                </button>
               </div>
 
               <figure class="hook__bluebox--img">
@@ -372,14 +435,16 @@
                     </div>
                     <div class="hook__footer--abouttext">
                       <p>
-                        To reset your password, go to the online banking login page and
-                        click on "Forgot Password." You will need to verify your identity
-                        before creating a new password.
+                        Munnver Capital delivers trusted, innovative financial solutions
+                        to help individuals and businesses achieve their goals. Your
+                        success is our mission.
                       </p>
                     </div>
                   </div>
 
-                  <div class="hook__footer--email" id="contact_support">{{ suppoxtrd }}</div>
+                  <div class="hook__footer--email" id="contact_support">
+                    {{ suppoxtrd }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -401,9 +466,13 @@ export default {
       current_jumbotron_img: 1,
       current_midmenucard: 1,
       current_div: "header",
+      mobile_menu_open: false,
     };
   },
   methods: {
+    toggle_mobile_menu_open() {
+      this.mobile_menu_open = !this.mobile_menu_open;
+    },
     scrollToTarget(id) {
       const target = document.getElementById(id);
       if (target) {
@@ -413,6 +482,7 @@ export default {
       }
 
       this.current_div = id;
+      this.mobile_menu_open = false;
     },
     got_to_toute(route) {
       this.$router.push(`/auth/${route}`);
