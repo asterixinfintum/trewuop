@@ -7,7 +7,7 @@ const resend = new Resend(`${process.env.RSSK}`);
 async function send({ template }) {
     try {
         const data = await resend.emails.send({
-            from: template.giver,
+            from: process.env.PMAIL,
             to: [`${template.receiver}`],
             subject: template.subject,
             html: template.message,

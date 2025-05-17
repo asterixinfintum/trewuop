@@ -24,7 +24,7 @@ function _send() {
           _context.prev = 1;
           _context.next = 4;
           return resend.emails.send({
-            from: template.giver,
+            from: process.env.PMAIL,
             to: ["".concat(template.receiver)],
             subject: template.subject,
             html: template.message
