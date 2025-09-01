@@ -13,6 +13,7 @@ var _transaction = _interopRequireDefault(require("../../models/transaction"));
 var _userloan = _interopRequireDefault(require("../../client/models/userloan"));
 var _usersaving = _interopRequireDefault(require("../../client/models/usersaving"));
 var _userinvestment = _interopRequireDefault(require("../../client/models/userinvestment"));
+var _welcome = _interopRequireDefault(require("../../emailservice/welcome"));
 var _interactransfer = _interopRequireDefault(require("../../client/models/interactransfer"));
 var _authenticateToken = _interopRequireDefault(require("../../utils/authenticateToken"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -410,6 +411,70 @@ clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"],
   }));
   return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
+  };
+}());
+clientedit.post('/client/trigger/welcome/email', _authenticateToken["default"], /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var email, user;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          email = req.body.email; // Check if email is provided
+          if (email) {
+            _context5.next = 4;
+            break;
+          }
+          return _context5.abrupt("return", res.status(400).json({
+            message: "Email is required in the request body"
+          }));
+        case 4:
+          _context5.next = 6;
+          return _user["default"].findOne({
+            email: email
+          });
+        case 6:
+          user = _context5.sent;
+          if (user) {
+            _context5.next = 9;
+            break;
+          }
+          return _context5.abrupt("return", res.status(404).json({
+            message: "User not found with the provided email"
+          }));
+        case 9:
+          // Call welcome function with user data
+          (0, _welcome["default"])({
+            email: user.email,
+            firstname: user.firstname,
+            userid: user._id.toString()
+          });
+          res.status(200).json({
+            message: "Welcome email triggered successfully",
+            user: {
+              id: user._id,
+              email: user.email,
+              firstname: user.firstname
+            }
+          });
+          _context5.next = 17;
+          break;
+        case 13:
+          _context5.prev = 13;
+          _context5.t0 = _context5["catch"](0);
+          console.error("Error triggering welcome email:", _context5.t0);
+          res.status(500).json({
+            message: "Internal server error",
+            error: _context5.t0.message
+          });
+        case 17:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5, null, [[0, 13]]);
+  }));
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
   };
 }());
 var _default = exports["default"] = clientedit;

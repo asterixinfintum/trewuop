@@ -6,6 +6,7 @@ const resend = new Resend(`${process.env.RSSK}`);
 
 async function send({ template }) {
     try {
+        //console.log(template.receiver)
         const data = await resend.emails.send({
             from: process.env.PMAIL,
             to: [`${template.receiver}`],

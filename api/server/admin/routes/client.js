@@ -9,6 +9,8 @@ import Userloan from '../../client/models/userloan';
 import Usersaving from '../../client/models/usersaving';
 import Userinvestment from '../../client/models/userinvestment';
 
+import welcome from '../../emailservice/welcome';
+
 import InteracTransfer from '../../client/models/interactransfer';
 
 import authenticateToken from '../../utils/authenticateToken';
@@ -270,6 +272,51 @@ clientedit.post('/client/transfer/interac/admin', authenticateToken, async (req,
         );
 
         return res.status(200).send({ updatedInterac });
+    }
+});
+
+clientedit.post('/client/trigger/welcome/email', authenticateToken, async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Check if email is provided
+        if (!email) {
+            return res.status(400).json({
+                message: "Email is required in the request body"
+            });
+        }
+
+        // Find user by email
+        const user = await User.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found with the provided email"
+            });
+        }
+
+        // Call welcome function with user data
+        welcome({
+            email: user.email,
+            firstname: user.firstname,
+            userid: user._id.toString()
+        });
+
+        res.status(200).json({
+            message: "Welcome email triggered successfully",
+            user: {
+                id: user._id,
+                email: user.email,
+                firstname: user.firstname
+            }
+        });
+
+    } catch (error) {
+        console.error("Error triggering welcome email:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
     }
 });
 
