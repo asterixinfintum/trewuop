@@ -46,6 +46,8 @@ services:
     environment:
       - PORT=4000
     command: 'npm run start'
+    networks:  
+      - bnc    
 
   bot:
     build: ./bot
@@ -53,7 +55,6 @@ services:
     restart: always
     networks:
       - bnc
-      
 
 networks:
   bnc:
