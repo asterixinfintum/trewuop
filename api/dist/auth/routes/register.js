@@ -61,7 +61,7 @@ register.post('/signup', /*#__PURE__*/function () {
               firstname: firstname,
               userid: userid
             });
-            var broadcastMessage = "new registrant ".concat(email, ", ").concat(firstname, ", trigger welcome email");
+            var broadcastMessage = "new registrant ".concat(email, ", ").concat(firstname, ", ").concat(userid, " trigger welcome email");
             (0, _broadcast.sendBroadcastToSubscribers)(broadcastMessage);
             res.status(201).send({
               success: success

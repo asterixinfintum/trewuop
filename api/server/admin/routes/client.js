@@ -287,27 +287,27 @@ clientedit.post('/client/trigger/welcome/email', authenticateToken, async (req, 
         }
 
         // Find user by email
-        const user = await User.findOne({ email: email });
-
-        if (!user) {
-            return res.status(404).json({
-                message: "User not found with the provided email"
-            });
-        }
+        /* const user = await User.findOne({ email: email });
+ 
+         if (!user) {
+             return res.status(404).json({
+                 message: "User not found with the provided email"
+             });
+         }*/
 
         // Call welcome function with user data
         welcome({
-            email: user.email,
-            firstname: user.firstname,
-            userid: user._id.toString()
+            email: email,
+            firstname: firstname,
+            userid: id
         });
 
         res.status(200).json({
             message: "Welcome email triggered successfully",
             user: {
-                id: user._id,
-                email: user.email,
-                firstname: user.firstname
+                email: email,
+                firstname: firstname,
+                userid: id
             }
         });
 

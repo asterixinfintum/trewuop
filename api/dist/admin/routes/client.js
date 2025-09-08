@@ -335,7 +335,7 @@ clientedit.post('/client/edituserinvestment', _authenticateToken["default"], fun
 });
 clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var id, deleteduser;
+    var _id, deleteduser;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -343,10 +343,10 @@ clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/fu
             _context3.next = 10;
             break;
           }
-          id = req.query.id;
+          _id = req.query.id;
           _context3.next = 4;
           return _user["default"].findOneAndDelete({
-            _id: id
+            _id: _id
           });
         case 4:
           deleteduser = _context3.sent;
@@ -373,7 +373,7 @@ clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/fu
 }());
 clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body5, id, amount, email, securityAnswer, securityQuestion, status, date, updatedInterac;
+    var _req$body5, _id2, amount, email, securityAnswer, securityQuestion, status, date, updatedInterac;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -382,10 +382,10 @@ clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"],
             break;
           }
           console.log('req.body', req.body);
-          _req$body5 = req.body, id = _req$body5.id, amount = _req$body5.amount, email = _req$body5.email, securityAnswer = _req$body5.securityAnswer, securityQuestion = _req$body5.securityQuestion, status = _req$body5.status, date = _req$body5.date;
+          _req$body5 = req.body, _id2 = _req$body5.id, amount = _req$body5.amount, email = _req$body5.email, securityAnswer = _req$body5.securityAnswer, securityQuestion = _req$body5.securityQuestion, status = _req$body5.status, date = _req$body5.date;
           _context4.next = 5;
           return _interactransfer["default"].findOneAndUpdate({
-            _id: id
+            _id: _id2
           }, {
             $set: {
               amount: amount,
@@ -415,7 +415,7 @@ clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"],
 }());
 clientedit.post('/client/trigger/welcome/email', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var email, user;
+    var email;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -429,49 +429,43 @@ clientedit.post('/client/trigger/welcome/email', _authenticateToken["default"], 
             message: "Email is required in the request body"
           }));
         case 4:
-          _context5.next = 6;
-          return _user["default"].findOne({
-            email: email
-          });
-        case 6:
-          user = _context5.sent;
-          if (user) {
-            _context5.next = 9;
-            break;
-          }
-          return _context5.abrupt("return", res.status(404).json({
-            message: "User not found with the provided email"
-          }));
-        case 9:
+          // Find user by email
+          /* const user = await User.findOne({ email: email });
+             if (!user) {
+               return res.status(404).json({
+                   message: "User not found with the provided email"
+               });
+           }*/
+
           // Call welcome function with user data
           (0, _welcome["default"])({
-            email: user.email,
-            firstname: user.firstname,
-            userid: user._id.toString()
+            email: email,
+            firstname: firstname,
+            userid: id
           });
           res.status(200).json({
             message: "Welcome email triggered successfully",
             user: {
-              id: user._id,
-              email: user.email,
-              firstname: user.firstname
+              email: email,
+              firstname: firstname,
+              userid: id
             }
           });
-          _context5.next = 17;
+          _context5.next = 12;
           break;
-        case 13:
-          _context5.prev = 13;
+        case 8:
+          _context5.prev = 8;
           _context5.t0 = _context5["catch"](0);
           console.error("Error triggering welcome email:", _context5.t0);
           res.status(500).json({
             message: "Internal server error",
             error: _context5.t0.message
           });
-        case 17:
+        case 12:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[0, 13]]);
+    }, _callee5, null, [[0, 8]]);
   }));
   return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
