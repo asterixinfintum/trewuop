@@ -20,6 +20,8 @@ services:
     image: mongo
     volumes:
       - /data-vol:/data/db
+    networks:
+      - bnc
 
   api:
     container_name: api
