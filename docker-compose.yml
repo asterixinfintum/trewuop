@@ -11,6 +11,7 @@ services:
       - ./nginx/data/certs:/etc/nginx/certs
     depends_on:
       - api
+      - nuxt-app
     networks:
       - bnc
 
@@ -19,8 +20,6 @@ services:
     image: mongo
     volumes:
       - /data-vol:/data/db
-    networks:
-      - bnc
 
   api:
     container_name: api
@@ -39,13 +38,6 @@ services:
       - PORT=8002
     networks:
       - bnc
-
-  bot:
-    build: ./bot
-    container_name: bot
-    restart: always
-    networks:
-      - bnc
       
   nuxt-app:
     build: ./ui
@@ -54,6 +46,14 @@ services:
     environment:
       - PORT=4000
     command: 'npm run start'
+
+  bot:
+    build: ./bot
+    container_name: bot
+    restart: always
+    networks:
+      - bnc
+      
 
 networks:
   bnc:
