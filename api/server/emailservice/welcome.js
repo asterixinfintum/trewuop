@@ -4,6 +4,8 @@ import User from '.././models/user';
 
 import send from './send';
 
+//http://localhost:3000/overview/68bee2620fad3df397f64794?confirm=true
+
 const platformname = process.env.PLATFORM;
 
 const welcome = ({ email, firstname, userid }) => {

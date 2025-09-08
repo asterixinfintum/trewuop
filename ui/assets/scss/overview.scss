@@ -828,6 +828,8 @@ $overview-area-padding: #{scaleValue(30)};
             font-size: #{scaleValue(14)};
             font-weight: 400;
             opacity: .9;
+            flex-shrink: 0;
+            //margin-right: .5rem;
 
             @media only screen and (max-width: 768px) {
                 font-size: #{scaleValue(60)};

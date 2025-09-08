@@ -16,6 +16,7 @@ import adminauth from './admin/routes/adminauth';
 import item from './admin/routes/item';
 import client from './client/routes/client';
 import clientedit from './admin/routes/client';
+import interacroute from './update/interacroute';
 
 import resetpassword from "./emailservice/passwordrecovery";
 
@@ -94,7 +95,8 @@ app.use(client);
 app.use(clientedit);
 app.use(backup);
 app.use(resetpassword);
-app.use('/uploads', express.static('uploads'))
+app.use(interacroute);
+app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT || 8081;
 

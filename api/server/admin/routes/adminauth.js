@@ -89,65 +89,63 @@ adminauth.get('/admin/getusers', authenticateToken, async (req, res) => {
         }
 
         const { currentPageQuery, searchquery } = req.query;
+        const currentPage = Math.max(parseInt(currentPageQuery) || 1, 1);
+        const itemsPerPage = 30;
 
-        //console.log(currentPageQuery, searchquery, 'checker');
+        console.log(currentPage, searchquery, 'checker');
 
-        if (searchquery.length) {
-            const useritems = await User.find({
+        let query = {};
+
+        // Add search conditions only if searchquery exists and has length
+        if (searchquery && searchquery.length > 0) {
+            query = {
                 $or: [
                     { firstname: { $regex: searchquery, $options: 'i' } },
                     { lastname: { $regex: searchquery, $options: 'i' } },
                     { email: { $regex: searchquery, $options: 'i' } }
                 ]
-            }).select('_id firstname lastname email phonenumber account');
-
-            const totalItems = useritems.length;
-            const itemsPerPage = 30;
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            let currentPage = Math.max(currentPageQuery, 1);
-            if (totalPages > 0) {
-                currentPage = Math.min(currentPage, totalPages);
-            }
-            const skip = (currentPage - 1) * itemsPerPage;
-            const remainingItems = Math.max(totalItems - (currentPage * itemsPerPage), 0);
-            const pageNumbers = [...Array(totalPages).keys()].map(i => i + 1);
-
-            const useritemstwo = await User.find({
-                $or: [
-                    { firstname: { $regex: searchquery, $options: 'i' } },
-                    { lastname: { $regex: searchquery, $options: 'i' } },
-                    { email: { $regex: searchquery, $options: 'i' } }
-                ]
-            }).select('_id firstname lastname email phonenumber account, online').skip(skip).limit(itemsPerPage);
-
-            const users = await Promise.all(useritemstwo.map(async user => {
-                //console.log(user, 'here')
-                const [account, cards] = await Promise.all([
-                    Account.findOne({ _id: user.account }),
-                    Card.find({ user: user._id })
-                ]);
-                return { details: user, account, cards };
-            }));
-
-            // console.log(users, totalPages, currentPage, remainingItems, pageNumbers )
-
-            // res.send({ users, totalPages, currentPage, remainingItems, pageNumbers });
-
-            res.status(200).send({
-                success: {
-                    message: 'success',
-                    type: 'platform users',
-                    content: users,
-                    totalPages,
-                    remainingItems,
-                    pageNumbers,
-                    currentPage,
-                    totalItems
-                }
-            });
+            };
         }
+
+        // Get total count of users (for pagination)
+        const totalItems = await User.countDocuments(query);
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const validatedCurrentPage = Math.min(currentPage, totalPages || 1);
+        const skip = (validatedCurrentPage - 1) * itemsPerPage;
+        const remainingItems = Math.max(totalItems - (validatedCurrentPage * itemsPerPage), 0);
+        const pageNumbers = totalPages > 0 ? [...Array(totalPages).keys()].map(i => i + 1) : [];
+
+        // Get paginated users
+        const users = await User.find(query)
+            .select('_id firstname lastname email phonenumber account online')
+            .skip(skip)
+            .limit(itemsPerPage)
+            .sort({ _id: -1 }); // Added sorting for consistent results
+
+        // Enrich user data with account and card information
+        const enrichedUsers = await Promise.all(users.map(async user => {
+            const [account, cards] = await Promise.all([
+                Account.findOne({ _id: user.account }),
+                Card.find({ user: user._id })
+            ]);
+            return { details: user, account, cards };
+        }));
+
+        res.status(200).send({
+            success: {
+                message: 'success',
+                type: 'platform users',
+                content: enrichedUsers,
+                totalPages,
+                remainingItems,
+                pageNumbers,
+                currentPage: validatedCurrentPage,
+                totalItems
+            }
+        });
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).send({ error: 'Internal server error' });
     }
 });
@@ -232,7 +230,7 @@ adminauth.get('/admin/getuser', authenticateToken, async (req, res) => {
         }
 
         const user = await User.findOne({ _id: userid });
-        
+
         if (!user) {
             return res.status(404).send({ error: 'User not found' });
         }

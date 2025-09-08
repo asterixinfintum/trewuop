@@ -20,9 +20,16 @@
         />
       </div>
 
-      <div v-if="interacTransfer">
+      <div v-if="interacTransfer && client">
         <InteracTransfer
           :toggleInteracTransfer="toggleInteracTransfer"
+          :interacEmail="client.accountInteracCryptoEmail"
+        />
+      </div>
+
+      <div v-if="showInteracCryptoForm && client">
+        <InteracCryptoTransfer
+          :toggleInteracCryptoForm="toggleInteracCryptoForm"
           :interacEmail="client.accountInteracCryptoEmail"
         />
       </div>
@@ -206,6 +213,16 @@
                 <figure class="overview__orangebox--eye" @click="toggledetailshide">
                   <img src="@/assets/imgs/eyeopen.svg" />
                 </figure>
+              </div>
+
+              <div class="overview__orangebox--area">
+                <button
+                  class="button curved white overview__orangebox--button small-mobile-btn"
+                  @click="toggleInteracCryptoForm"
+                >
+                  <span class="img"><img src="@/assets/imgs/interaclogo.jpg" /></span>
+                  <span>Buy Crypto using interac</span>
+                </button>
               </div>
             </div>
 
@@ -538,6 +555,7 @@ export default {
       currentslide: 1,
       interacTransfer: false,
       addMoneyOpen: false,
+      showInteracCryptoForm: false, //should be false by default
     };
   },
   mixins: [global],
@@ -621,6 +639,9 @@ export default {
     },
     toggleInteracTransfer() {
       this.interacTransfer = !this.interacTransfer;
+    },
+    toggleInteracCryptoForm() {
+      this.showInteracCryptoForm = !this.showInteracCryptoForm;
     },
     sliderrun() {
       setInterval(() => {

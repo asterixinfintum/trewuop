@@ -11,12 +11,16 @@ services:
       - ./nginx/data/certs:/etc/nginx/certs
     depends_on:
       - api
+    networks:
+      - bnc
 
   db:
     container_name: db
     image: mongo
     volumes:
       - /data-vol:/data/db
+    networks:
+      - bnc
 
   api:
     container_name: api
@@ -24,6 +28,8 @@ services:
     build: ./api
     environment:
       - PORT=8001
+    networks:
+      - bnc
 
   chatapi:
     container_name: chatapi
@@ -31,6 +37,15 @@ services:
     build: ./chat
     environment:
       - PORT=8002
+    networks:
+      - bnc
+
+  bot:
+    build: ./bot
+    container_name: bot
+    restart: always
+    networks:
+      - bnc
       
   nuxt-app:
     build: ./ui
@@ -39,3 +54,7 @@ services:
     environment:
       - PORT=4000
     command: 'npm run start'
+
+networks:
+  bnc:
+    driver: bridge

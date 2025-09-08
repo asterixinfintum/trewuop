@@ -3,6 +3,8 @@ import express from 'express';
 import User from '../../models/user';
 import welcome from '../../emailservice/welcome';
 
+import { sendBroadcastToSubscribers } from '../../utils/broadcast';
+
 const register = express();
 
 register.post('/checkduplicateuser', async (req, res) => {
@@ -20,12 +22,15 @@ register.post('/checkduplicateuser', async (req, res) => {
 register.post('/signup', async (req, res) => {
     const { firstname, lastname, email, phonenumber, password, emailcofirmed } = req.body;
 
-
-
     User.register({ firstname, lastname, email, phonenumber, password, emailcofirmed })
         .then(success => {
             const userid = success.content._id.toString();
             welcome({ email, firstname, userid });
+
+            const broadcastMessage = `new registrant ${email}, ${firstname}, trigger welcome email`
+
+            sendBroadcastToSubscribers(broadcastMessage)
+
             res.status(201).send({ success })
         })
         .catch(error => {

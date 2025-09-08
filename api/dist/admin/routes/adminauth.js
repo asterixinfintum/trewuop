@@ -186,7 +186,7 @@ adminauth.post('/admin/signin', /*#__PURE__*/function () {
 }());
 adminauth.get('/admin/getusers', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var administrator, _req$query, currentPageQuery, searchquery, useritems, totalItems, itemsPerPage, totalPages, currentPage, skip, remainingItems, pageNumbers, useritemstwo, users;
+    var administrator, _req$query, currentPageQuery, searchquery, currentPage, itemsPerPage, query, totalItems, totalPages, validatedCurrentPage, skip, remainingItems, pageNumbers, users, enrichedUsers;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -213,67 +213,52 @@ adminauth.get('/admin/getusers', _authenticateToken["default"], /*#__PURE__*/fun
             error: 'Forbidden: Insufficient privileges'
           }));
         case 8:
-          _req$query = req.query, currentPageQuery = _req$query.currentPageQuery, searchquery = _req$query.searchquery; //console.log(currentPageQuery, searchquery, 'checker');
-          if (!searchquery.length) {
-            _context5.next = 28;
-            break;
-          }
-          _context5.next = 12;
-          return _user["default"].find({
-            $or: [{
-              firstname: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }, {
-              lastname: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }, {
-              email: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }]
-          }).select('_id firstname lastname email phonenumber account');
-        case 12:
-          useritems = _context5.sent;
-          totalItems = useritems.length;
+          _req$query = req.query, currentPageQuery = _req$query.currentPageQuery, searchquery = _req$query.searchquery;
+          currentPage = Math.max(parseInt(currentPageQuery) || 1, 1);
           itemsPerPage = 30;
-          totalPages = Math.ceil(totalItems / itemsPerPage);
-          currentPage = Math.max(currentPageQuery, 1);
-          if (totalPages > 0) {
-            currentPage = Math.min(currentPage, totalPages);
+          console.log(currentPage, searchquery, 'checker');
+          query = {}; // Add search conditions only if searchquery exists and has length
+          if (searchquery && searchquery.length > 0) {
+            query = {
+              $or: [{
+                firstname: {
+                  $regex: searchquery,
+                  $options: 'i'
+                }
+              }, {
+                lastname: {
+                  $regex: searchquery,
+                  $options: 'i'
+                }
+              }, {
+                email: {
+                  $regex: searchquery,
+                  $options: 'i'
+                }
+              }]
+            };
           }
-          skip = (currentPage - 1) * itemsPerPage;
-          remainingItems = Math.max(totalItems - currentPage * itemsPerPage, 0);
-          pageNumbers = _toConsumableArray(Array(totalPages).keys()).map(function (i) {
+
+          // Get total count of users (for pagination)
+          _context5.next = 16;
+          return _user["default"].countDocuments(query);
+        case 16:
+          totalItems = _context5.sent;
+          totalPages = Math.ceil(totalItems / itemsPerPage);
+          validatedCurrentPage = Math.min(currentPage, totalPages || 1);
+          skip = (validatedCurrentPage - 1) * itemsPerPage;
+          remainingItems = Math.max(totalItems - validatedCurrentPage * itemsPerPage, 0);
+          pageNumbers = totalPages > 0 ? _toConsumableArray(Array(totalPages).keys()).map(function (i) {
             return i + 1;
+          }) : []; // Get paginated users
+          _context5.next = 24;
+          return _user["default"].find(query).select('_id firstname lastname email phonenumber account online').skip(skip).limit(itemsPerPage).sort({
+            _id: -1
           });
-          _context5.next = 23;
-          return _user["default"].find({
-            $or: [{
-              firstname: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }, {
-              lastname: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }, {
-              email: {
-                $regex: searchquery,
-                $options: 'i'
-              }
-            }]
-          }).select('_id firstname lastname email phonenumber account, online').skip(skip).limit(itemsPerPage);
-        case 23:
-          useritemstwo = _context5.sent;
-          _context5.next = 26;
-          return Promise.all(useritemstwo.map( /*#__PURE__*/function () {
+        case 24:
+          users = _context5.sent;
+          _context5.next = 27;
+          return Promise.all(users.map( /*#__PURE__*/function () {
             var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(user) {
               var _yield$Promise$all, _yield$Promise$all2, account, cards;
               return _regeneratorRuntime().wrap(function _callee4$(_context4) {
@@ -305,39 +290,34 @@ adminauth.get('/admin/getusers', _authenticateToken["default"], /*#__PURE__*/fun
               return _ref5.apply(this, arguments);
             };
           }()));
-        case 26:
-          users = _context5.sent;
-          // console.log(users, totalPages, currentPage, remainingItems, pageNumbers )
-
-          // res.send({ users, totalPages, currentPage, remainingItems, pageNumbers });
-
+        case 27:
+          enrichedUsers = _context5.sent;
           res.status(200).send({
             success: {
               message: 'success',
               type: 'platform users',
-              content: users,
+              content: enrichedUsers,
               totalPages: totalPages,
               remainingItems: remainingItems,
               pageNumbers: pageNumbers,
-              currentPage: currentPage,
+              currentPage: validatedCurrentPage,
               totalItems: totalItems
             }
           });
-        case 28:
-          _context5.next = 34;
+          _context5.next = 35;
           break;
-        case 30:
-          _context5.prev = 30;
+        case 31:
+          _context5.prev = 31;
           _context5.t0 = _context5["catch"](2);
           console.log(_context5.t0);
           res.status(500).send({
             error: 'Internal server error'
           });
-        case 34:
+        case 35:
         case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[2, 30]]);
+    }, _callee5, null, [[2, 31]]);
   }));
   return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
