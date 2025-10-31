@@ -277,7 +277,7 @@ clientedit.post('/client/transfer/interac/admin', authenticateToken, async (req,
 
 clientedit.post('/client/trigger/welcome/email', authenticateToken, async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, firstname, id } = req.body;
 
         // Check if email is provided
         if (!email) {

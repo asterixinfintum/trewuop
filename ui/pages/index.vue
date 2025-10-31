@@ -67,8 +67,8 @@
                 >Features</span
               >
               <span
-                @click="scrollToTarget('about')"
-                :class="{ current: current_div === 'about' }"
+                @click="scrollToTarget('employees')"
+                :class="{ current: current_div === 'employees' }"
                 >About Us</span
               >
             </div>
@@ -384,6 +384,9 @@
             </div>
           </div>
         </div>
+
+
+        <WorkersGrid />
 
         <div class="hook__section four" id="about">
           <div>

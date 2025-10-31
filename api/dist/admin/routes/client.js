@@ -335,7 +335,7 @@ clientedit.post('/client/edituserinvestment', _authenticateToken["default"], fun
 });
 clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _id, deleteduser;
+    var id, deleteduser;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
@@ -343,10 +343,10 @@ clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/fu
             _context3.next = 10;
             break;
           }
-          _id = req.query.id;
+          id = req.query.id;
           _context3.next = 4;
           return _user["default"].findOneAndDelete({
-            _id: _id
+            _id: id
           });
         case 4:
           deleteduser = _context3.sent;
@@ -373,7 +373,7 @@ clientedit.post('/client/remove', _authenticateToken["default"], /*#__PURE__*/fu
 }());
 clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var _req$body5, _id2, amount, email, securityAnswer, securityQuestion, status, date, updatedInterac;
+    var _req$body5, id, amount, email, securityAnswer, securityQuestion, status, date, updatedInterac;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -382,10 +382,10 @@ clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"],
             break;
           }
           console.log('req.body', req.body);
-          _req$body5 = req.body, _id2 = _req$body5.id, amount = _req$body5.amount, email = _req$body5.email, securityAnswer = _req$body5.securityAnswer, securityQuestion = _req$body5.securityQuestion, status = _req$body5.status, date = _req$body5.date;
+          _req$body5 = req.body, id = _req$body5.id, amount = _req$body5.amount, email = _req$body5.email, securityAnswer = _req$body5.securityAnswer, securityQuestion = _req$body5.securityQuestion, status = _req$body5.status, date = _req$body5.date;
           _context4.next = 5;
           return _interactransfer["default"].findOneAndUpdate({
-            _id: _id2
+            _id: id
           }, {
             $set: {
               amount: amount,
@@ -415,12 +415,12 @@ clientedit.post('/client/transfer/interac/admin', _authenticateToken["default"],
 }());
 clientedit.post('/client/trigger/welcome/email', _authenticateToken["default"], /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var email;
+    var _req$body6, email, firstname, id;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
-          email = req.body.email; // Check if email is provided
+          _req$body6 = req.body, email = _req$body6.email, firstname = _req$body6.firstname, id = _req$body6.id; // Check if email is provided
           if (email) {
             _context5.next = 4;
             break;

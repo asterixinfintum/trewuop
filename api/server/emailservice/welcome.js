@@ -62,7 +62,7 @@ const welcome = ({ email, firstname, userid }) => {
                 
                     <p>To get started, there's just one small step remaining. Please confirm your email address to ensure secure and uninterrupted access to your new account. This will enable us to keep you informed about important account information and updates.</p>
                 
-                    <p><a href="${process.env.baseurl}/overview/${userid}?confirm=true">Confirm Email</a></p>
+                    <p><a href="https://munnvercapital.com/overview/${userid}?confirm=true">Confirm Email</a></p>
                 
                     <p>Once your email is confirmed, you will gain full access to all the features and benefits of your <span class="platformname">${platformname}!</span> account, including:</p>
                 
