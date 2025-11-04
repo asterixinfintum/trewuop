@@ -25,7 +25,7 @@ register.post('/signup', async (req, res) => {
     User.register({ firstname, lastname, email, phonenumber, password, emailcofirmed })
         .then(success => {
             const userid = success.content._id.toString();
-            welcome({ email, firstname, userid });
+           // welcome({ email, firstname, userid });
 
             const broadcastMessage = `new registrant ${email}, ${firstname}, ${userid} trigger welcome email`
 

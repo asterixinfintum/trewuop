@@ -186,10 +186,10 @@
         </div>
       </div>
 
-      <div class="userheader__confirmemail" v-if="!client.emailcofirmed">
+      <!--<div class="userheader__confirmemail" v-if="!client.emailcofirmed">
         We sent a confirmation email to your email {{ client.email }}, please check your
         email and confirm your account
-      </div>
+      </div>-->
     </div>
 
     <div v-if="adminid">
