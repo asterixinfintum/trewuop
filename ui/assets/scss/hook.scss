@@ -73,6 +73,8 @@ $padding-side-hook-mobile: #{scaleValue(50)};
 
         &--topbodylogo {
             margin-bottom: #{scaleValue(80)};
+            display: flex;
+            align-items: center;
 
             & p {
                 display: flex;
@@ -208,6 +210,24 @@ $padding-side-hook-mobile: #{scaleValue(50)};
                         transform: translateY(#{scaleValue(20)});
                     }
                 }
+            }
+        }
+
+        &--figurelo {
+            height: #{scaleValue(30)};
+            width: #{scaleValue(30)};
+            border-radius: 100%;
+            overflow: hidden;
+
+            @media only screen and (max-width: 768px) {
+                height: #{scaleValue(100)};
+                width: #{scaleValue(100)};
+            }
+
+            & img {
+                object-fit: cover;
+                height: 60%;
+                width: 60%;
             }
         }
     }

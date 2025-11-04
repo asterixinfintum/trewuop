@@ -11,8 +11,8 @@
         <div class="hook__header--body">
           <div class="hook__header--topbody">
             <div class="hook__header--topbodylogo">
-              <figure>
-                <img />
+              <figure class="hook__header--figurelo">
+                <img src="/woen.png"/>
               </figure>
               <p>
                 <span>{{ logoOne }}</span> <span>{{ logoTwo }}</span>
