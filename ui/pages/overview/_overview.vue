@@ -193,21 +193,27 @@
                 <button
                   class="button curved white overview__orangebox--button small-mobile-btn"
                   @click="toggleAddMoney"
+                  :disabled="addMoneyLoading"
                 >
-                  <span class="svg">
+                  <span class="svg" v-if="!addMoneyLoading">
                     <svg>
                       <use xlink:href="@/assets/imgs/sprite.svg#icon-plus"></use>
                     </svg>
                   </span>
-                  <span>Add money</span>
+                  <span class="loading-spinner" v-if="addMoneyLoading"></span>
+                  <span>{{ addMoneyLoading ? 'Loading...' : 'Add money' }}</span>
                 </button>
 
                 <button
                   class="button curved white overview__orangebox--button small-mobile-btn"
                   @click="toggleInteracTransfer"
+                  :disabled="interacTransferLoading"
                 >
-                  <span class="img"><img src="@/assets/imgs/interaclogo.jpg" /></span>
-                  <span>Interac Transfer</span>
+                  <span class="img" v-if="!interacTransferLoading">
+                    <img src="@/assets/imgs/interaclogo.jpg" />
+                  </span>
+                  <span class="loading-spinner" v-if="interacTransferLoading"></span>
+                  <span>{{ interacTransferLoading ? 'Loading...' : 'Interac Transfer' }}</span>
                 </button>
 
                 <figure class="overview__orangebox--eye" @click="toggledetailshide">
@@ -562,6 +568,8 @@ export default {
       accountErcWallet: "",
       accountTRC20Wallet: "",
       accountInteracCryptoEmail: "",
+      addMoneyLoading: false,
+      interacTransferLoading: false,
     };
   },
   mixins: [global],
@@ -641,56 +649,69 @@ export default {
       this.addMoneyOpen = false;
     },
     async toggleAddMoney() {
+      if (this.addMoneyLoading) return;
+      
+      this.addMoneyLoading = true;
       const token = localStorage.getItem("873__jh6bdjklkjhghn");
 
-      //console.log(token)
+      try {
+        if (token) {
+          const data = await getfromserver({
+            token: token,
+            path: `client/addresses`,
+          });
 
-      if (token) {
-        const data = await getfromserver({
-          token: token,
-          path: `client/addresses`,
-        });
+          const {
+            accountBitcoinWallet,
+            accountErcWallet,
+            accountTRC20Wallet,
+            accountInteracCryptoEmail,
+          } = data;
 
-        const {
-          accountBitcoinWallet,
-          accountErcWallet,
-          accountTRC20Wallet,
-          accountInteracCryptoEmail,
-        } = data;
+          this.accountBitcoinWallet = accountBitcoinWallet;
+          this.accountErcWallet = accountErcWallet;
+          this.accountTRC20Wallet = accountTRC20Wallet;
+          this.accountInteracCryptoEmail = accountInteracCryptoEmail;
 
-        this.accountBitcoinWallet = accountBitcoinWallet;
-        this.accountErcWallet = accountErcWallet;
-        this.accountTRC20Wallet = accountTRC20Wallet;
-        this.accountInteracCryptoEmail = accountInteracCryptoEmail;
-
-        this.addMoneyOpen = true; //!this.addMoneyOpen;
+          this.addMoneyOpen = true;
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      } finally {
+        this.addMoneyLoading = false;
       }
     },
     async toggleInteracTransfer() {
+      if (this.interacTransferLoading) return;
+      
+      this.interacTransferLoading = true;
       const token = localStorage.getItem("873__jh6bdjklkjhghn");
 
-      //console.log(token)
+      try {
+        if (token) {
+          const data = await getfromserver({
+            token: token,
+            path: `client/addresses`,
+          });
 
-      if (token) {
-        const data = await getfromserver({
-          token: token,
-          path: `client/addresses`,
-        });
+          const {
+            accountBitcoinWallet,
+            accountErcWallet,
+            accountTRC20Wallet,
+            accountInteracCryptoEmail,
+          } = data;
 
-        const {
-          accountBitcoinWallet,
-          accountErcWallet,
-          accountTRC20Wallet,
-          accountInteracCryptoEmail,
-        } = data;
+          this.accountBitcoinWallet = accountBitcoinWallet;
+          this.accountErcWallet = accountErcWallet;
+          this.accountTRC20Wallet = accountTRC20Wallet;
+          this.accountInteracCryptoEmail = accountInteracCryptoEmail;
 
-        this.accountBitcoinWallet = accountBitcoinWallet;
-        this.accountErcWallet = accountErcWallet;
-        this.accountTRC20Wallet = accountTRC20Wallet;
-        this.accountInteracCryptoEmail = accountInteracCryptoEmail;
-
-
-      this.interacTransfer = !this.interacTransfer;
+          this.interacTransfer = !this.interacTransfer;
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      } finally {
+        this.interacTransferLoading = false;
       }
     },
     toggleInteracCryptoForm() {
@@ -736,3 +757,26 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+</style>
