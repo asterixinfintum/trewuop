@@ -22,15 +22,19 @@
             Bitcoin
           </button>
         </div>
+        
         <div class="addmoney" v-if="viewNetwork === 'erc20'">
           <h3 class="addmoney__h3">Account ERC20 Wallet</h3>
+          <div class="addmoney__qr" v-if="accountErcWallet">
+            <vue-qrcode :value="accountErcWallet" :options="{ width: 200 }"></vue-qrcode>
+          </div>
           <div class="addmoney__address" v-if="accountErcWallet">
             <p>{{ accountErcWallet }}</p>
             <span></span>
           </div>
 
           <div class="addmoney__copy">
-            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard">
+            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard(accountErcWallet)">
               Copy Address
             </button>
           </div>
@@ -38,13 +42,16 @@
 
         <div class="addmoney" v-if="viewNetwork === 'trc20'">
           <h3 class="addmoney__h3">Account TRC20 Wallet</h3>
+          <div class="addmoney__qr" v-if="accountTRC20Wallet">
+            <vue-qrcode :value="accountTRC20Wallet" :options="{ width: 200 }"></vue-qrcode>
+          </div>
           <div class="addmoney__address" v-if="accountTRC20Wallet">
             <p>{{ accountTRC20Wallet }}</p>
             <span></span>
           </div>
 
           <div class="addmoney__copy">
-            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard">
+            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard(accountTRC20Wallet)">
               Copy Address
             </button>
           </div>
@@ -52,13 +59,16 @@
 
         <div class="addmoney" v-if="viewNetwork === 'btc'">
           <h3 class="addmoney__h3">Account BTC Wallet</h3>
+          <div class="addmoney__qr" v-if="accountBitcoinWallet">
+            <vue-qrcode :value="accountBitcoinWallet" :options="{ width: 200 }"></vue-qrcode>
+          </div>
           <div class="addmoney__address" v-if="accountBitcoinWallet">
             <p>{{ accountBitcoinWallet }}</p>
             <span></span>
           </div>
 
           <div class="addmoney__copy">
-            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard">
+            <button class="button" :class="{ buttonIsPulsing }" @click.stop="copyToClipboard(accountBitcoinWallet)">
               Copy Address
             </button>
           </div>
@@ -69,7 +79,12 @@
 </template>
 
 <script>
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+
 export default {
+  components: {
+    VueQrcode
+  },
   props: [
     "toggleAddMoney",
     "accountErcWallet",
@@ -87,7 +102,9 @@ export default {
     toggleViewNetwork(viewNetwork) {
       this.viewNetwork = viewNetwork;
     },
-    copyToClipboard(event) {
+    copyToClipboard(address) {
+      if (!address) return;
+      
       event.stopPropagation();
 
       this.buttonIsPulsing = true;
@@ -96,7 +113,7 @@ export default {
       }, 500);
 
       const el = document.createElement("textarea");
-      el.value = this.address;
+      el.value = address;
       el.setAttribute("readonly", "");
       el.style.position = "absolute";
       el.style.left = "-9999px";
