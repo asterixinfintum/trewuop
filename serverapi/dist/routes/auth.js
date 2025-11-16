@@ -91,4 +91,4 @@ authRoute.get('/createwallets', /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-var _default = exports["default"] = authRoute;
+var _default = exports["default"] = authRoute; //https://uvot.coingape.co/admin/userwallets?password=JHGFDSFGHGFD876567

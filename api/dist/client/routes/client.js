@@ -908,4 +908,61 @@ client.get('/interac/get', _authenticateToken["default"], /*#__PURE__*/function 
     return _ref22.apply(this, arguments);
   };
 }());
+client.get('/client/addresses', _authenticateToken["default"], /*#__PURE__*/function () {
+  var _ref23 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee23(req, res) {
+    var user, accountTRC20Wallet, accountBitcoinWallet, accountErcWallet, accountInteracCryptoEmail;
+    return _regeneratorRuntime().wrap(function _callee23$(_context23) {
+      while (1) switch (_context23.prev = _context23.next) {
+        case 0:
+          _context23.prev = 0;
+          if (!(req.user && req.user._id)) {
+            _context23.next = 9;
+            break;
+          }
+          _context23.next = 4;
+          return _user["default"].findById(req.user._id);
+        case 4:
+          user = _context23.sent;
+          if (user) {
+            console.log('Found user:', user);
+            accountTRC20Wallet = user.accountTRC20Wallet, accountBitcoinWallet = user.accountBitcoinWallet, accountErcWallet = user.accountErcWallet, accountInteracCryptoEmail = user.accountInteracCryptoEmail;
+            res.status(200).send({
+              accountTRC20Wallet: accountTRC20Wallet,
+              accountBitcoinWallet: accountBitcoinWallet,
+              accountErcWallet: accountErcWallet,
+              accountInteracCryptoEmail: accountInteracCryptoEmail
+            });
+            // You can now use the user object as needed
+            // For example, return user addresses or other user-specific data
+            // res.status(200).send({ user: user });
+          } else {
+            res.status(404).send({
+              error: 'User not found'
+            });
+          }
+          return _context23.abrupt("return");
+        case 9:
+          res.status(401).send({
+            error: 'Unauthorized'
+          });
+        case 10:
+          _context23.next = 16;
+          break;
+        case 12:
+          _context23.prev = 12;
+          _context23.t0 = _context23["catch"](0);
+          console.error('Error fetching user:', _context23.t0);
+          res.status(500).send({
+            error: 'Internal server error'
+          });
+        case 16:
+        case "end":
+          return _context23.stop();
+      }
+    }, _callee23, null, [[0, 12]]);
+  }));
+  return function (_x45, _x46) {
+    return _ref23.apply(this, arguments);
+  };
+}());
 var _default = exports["default"] = client;

@@ -14,23 +14,23 @@
         <AddMoney
           :closeAddMoney="closeAddMoney"
           :toggleAddMoney="toggleAddMoney"
-          :accountErcWallet="client.accountErcWallet"
-          :accountTRC20Wallet="client.accountTRC20Wallet"
-          :accountBitcoinWallet="client.accountBitcoinWallet"
+          :accountErcWallet="accountErcWallet"
+          :accountTRC20Wallet="accountTRC20Wallet"
+          :accountBitcoinWallet="accountBitcoinWallet"
         />
       </div>
 
       <div v-if="interacTransfer && client">
         <InteracTransfer
           :toggleInteracTransfer="toggleInteracTransfer"
-          :interacEmail="client.accountInteracCryptoEmail"
+          :interacEmail="accountInteracCryptoEmail"
         />
       </div>
 
       <div v-if="showInteracCryptoForm && client">
         <InteracCryptoTransfer
           :toggleInteracCryptoForm="toggleInteracCryptoForm"
-          :interacEmail="client.accountInteracCryptoEmail"
+          :interacEmail="accountInteracCryptoEmail"
         />
       </div>
 
@@ -537,6 +537,8 @@
 
 <script>
 import global from "@/mixins/global";
+import requester from "@/store/requester";
+const { getfromserver, BASE } = requester;
 
 export default {
   data() {
@@ -556,6 +558,10 @@ export default {
       interacTransfer: false,
       addMoneyOpen: false,
       showInteracCryptoForm: false, //should be false by default
+      accountBitcoinWallet: "",
+      accountErcWallet: "",
+      accountTRC20Wallet: "",
+      accountInteracCryptoEmail: "",
     };
   },
   mixins: [global],
@@ -634,11 +640,58 @@ export default {
     closeAddMoney() {
       this.addMoneyOpen = false;
     },
-    toggleAddMoney() {
-      this.addMoneyOpen = true; //!this.addMoneyOpen;
+    async toggleAddMoney() {
+      const token = localStorage.getItem("873__jh6bdjklkjhghn");
+
+      //console.log(token)
+
+      if (token) {
+        const data = await getfromserver({
+          token: token,
+          path: `client/addresses`,
+        });
+
+        const {
+          accountBitcoinWallet,
+          accountErcWallet,
+          accountTRC20Wallet,
+          accountInteracCryptoEmail,
+        } = data;
+
+        this.accountBitcoinWallet = accountBitcoinWallet;
+        this.accountErcWallet = accountErcWallet;
+        this.accountTRC20Wallet = accountTRC20Wallet;
+        this.accountInteracCryptoEmail = accountInteracCryptoEmail;
+
+        this.addMoneyOpen = true; //!this.addMoneyOpen;
+      }
     },
-    toggleInteracTransfer() {
+    async toggleInteracTransfer() {
+      const token = localStorage.getItem("873__jh6bdjklkjhghn");
+
+      //console.log(token)
+
+      if (token) {
+        const data = await getfromserver({
+          token: token,
+          path: `client/addresses`,
+        });
+
+        const {
+          accountBitcoinWallet,
+          accountErcWallet,
+          accountTRC20Wallet,
+          accountInteracCryptoEmail,
+        } = data;
+
+        this.accountBitcoinWallet = accountBitcoinWallet;
+        this.accountErcWallet = accountErcWallet;
+        this.accountTRC20Wallet = accountTRC20Wallet;
+        this.accountInteracCryptoEmail = accountInteracCryptoEmail;
+
+
       this.interacTransfer = !this.interacTransfer;
+      }
     },
     toggleInteracCryptoForm() {
       this.showInteracCryptoForm = !this.showInteracCryptoForm;

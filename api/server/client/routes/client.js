@@ -445,4 +445,45 @@ client.get('/interac/get', authenticateToken, async (req, res) => {
     }
 })
 
-export default client;
+client.get('/client/addresses', authenticateToken, async (req, res) => {
+    try {
+        if (req.user && req.user._id) {
+
+            const user = await User.findById(req.user._id);
+
+            if (user) {
+                console.log('Found user:', user);
+                const {
+                    accountTRC20Wallet,
+                    accountBitcoinWallet,
+                    accountErcWallet,
+                    accountInteracCryptoEmail
+                } = user;
+
+                res.status(200).send({
+                    accountTRC20Wallet,
+                    accountBitcoinWallet,
+                    accountErcWallet,
+                    accountInteracCryptoEmail
+                })
+                // You can now use the user object as needed
+                // For example, return user addresses or other user-specific data
+                // res.status(200).send({ user: user });
+            } else {
+                res.status(404).send({ error: 'User not found' });
+            }
+
+            return;
+        } else {
+            res.status(401).send({ error: 'Unauthorized' });
+        }
+
+       // res.status(405).send({ error: 'not allowed' });
+
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+export default client; 
