@@ -5,7 +5,7 @@ export default {
         return {
             logoOne: 'WealthOne',
             logoTwo: 'Munnver',
-            suppoxtrd: "support@munnvercapital.com"
+            suppoxtrd: "customerinfo@munnvercapital.com"
         }
     },
     head() {
