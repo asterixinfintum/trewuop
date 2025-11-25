@@ -116,7 +116,7 @@ mongoose.connect(`${process.env.DB}`, {
   useUnifiedTopology: true,
   readPreference: 'primary'
 }).then(async () => {
-  console.log('connected to database');
+  console.log('connected to database'); 
 
   server.listen(PORT, async (error) => {
     if (error) {

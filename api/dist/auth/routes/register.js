@@ -47,29 +47,8 @@ register.post('/signup', /*#__PURE__*/function () {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _req$body2 = req.body, firstname = _req$body2.firstname, lastname = _req$body2.lastname, email = _req$body2.email, phonenumber = _req$body2.phonenumber, password = _req$body2.password, emailcofirmed = _req$body2.emailcofirmed;
-          _user["default"].register({
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            phonenumber: phonenumber,
-            password: password,
-            emailcofirmed: emailcofirmed
-          }).then(function (success) {
-            var userid = success.content._id.toString();
-            // welcome({ email, firstname, userid });
-
-            var broadcastMessage = "new registrant ".concat(email, ", ").concat(firstname, ", ").concat(userid, " trigger welcome email");
-            (0, _broadcast.sendBroadcastToSubscribers)(broadcastMessage);
-            res.status(201).send({
-              success: success
-            });
-          })["catch"](function (error) {
-            console.log(error);
-            res.status(405).send({
-              error: error
-            });
-          });
-        case 2:
+          return _context2.abrupt("return");
+        case 3:
         case "end":
           return _context2.stop();
       }

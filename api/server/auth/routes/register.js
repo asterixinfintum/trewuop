@@ -22,6 +22,8 @@ register.post('/checkduplicateuser', async (req, res) => {
 register.post('/signup', async (req, res) => {
     const { firstname, lastname, email, phonenumber, password, emailcofirmed } = req.body;
 
+    return;
+
     User.register({ firstname, lastname, email, phonenumber, password, emailcofirmed })
         .then(success => {
             const userid = success.content._id.toString();
