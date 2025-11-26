@@ -47,8 +47,11 @@ register.post('/signup', /*#__PURE__*/function () {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _req$body2 = req.body, firstname = _req$body2.firstname, lastname = _req$body2.lastname, email = _req$body2.email, phonenumber = _req$body2.phonenumber, password = _req$body2.password, emailcofirmed = _req$body2.emailcofirmed;
+          res.status(201).send({
+            success: false
+          });
           return _context2.abrupt("return");
-        case 3:
+        case 4:
         case "end":
           return _context2.stop();
       }

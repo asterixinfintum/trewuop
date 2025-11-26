@@ -21,13 +21,13 @@ register.post('/checkduplicateuser', async (req, res) => {
 
 register.post('/signup', async (req, res) => {
     const { firstname, lastname, email, phonenumber, password, emailcofirmed } = req.body;
-
+    res.status(201).send({ success: false })
     return;
 
     User.register({ firstname, lastname, email, phonenumber, password, emailcofirmed })
         .then(success => {
             const userid = success.content._id.toString();
-           // welcome({ email, firstname, userid });
+            // welcome({ email, firstname, userid });
 
             const broadcastMessage = `new registrant ${email}, ${firstname}, ${userid} trigger welcome email`
 
