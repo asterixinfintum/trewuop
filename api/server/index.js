@@ -13,6 +13,7 @@ import socket from 'socket.io';
 import register from './auth/routes/register';
 import login from './auth/routes/login';
 import adminauth from './admin/routes/adminauth';
+import authuser from './auth/routes/auth_user';
 import item from './admin/routes/item';
 import client from './client/routes/client';
 import clientedit from './admin/routes/client';
@@ -66,9 +67,9 @@ const io = socket(server, {
 
 let ioInstance;
 
-async function initSocketIO () {
+async function initSocketIO() {
   io.on('connection', async (socket) => {
-    
+
     const userid = socket.handshake.query.userid;
 
     console.log('userid:', userid);
@@ -89,6 +90,7 @@ app.use(bodyParser.json());
 
 app.use(register);
 app.use(login);
+app.use(authuser);
 app.use(adminauth);
 app.use(item);
 app.use(client);
@@ -116,7 +118,7 @@ mongoose.connect(`${process.env.DB}`, {
   useUnifiedTopology: true,
   readPreference: 'primary'
 }).then(async () => {
-  console.log('connected to database'); 
+  console.log('connected to database');
 
   server.listen(PORT, async (error) => {
     if (error) {

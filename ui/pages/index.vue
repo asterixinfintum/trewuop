@@ -12,7 +12,7 @@
           <div class="hook__header--topbody">
             <div class="hook__header--topbodylogo">
               <figure class="hook__header--figurelo">
-                <img src="/woen.png"/>
+                <img src="/woen.png" />
               </figure>
               <p>
                 <span>{{ logoOne }}</span> <span>{{ logoTwo }}</span>
@@ -385,7 +385,6 @@
           </div>
         </div>
 
-
         <WorkersGrid />
 
         <div class="hook__section four" id="about">
@@ -459,6 +458,10 @@
 </template>
 
 <script>
+import requester from "@/store/requester";
+
+const { getfromserver } = requester;
+
 import sitenamemixin from "@/mixins/sitename";
 
 export default {
@@ -473,6 +476,32 @@ export default {
     };
   },
   methods: {
+    async checkAuthState() {
+      const token = localStorage.getItem("873__jh6bdjklkjhghn");
+
+      if (token) {
+        try {
+          const data = await getfromserver({
+            token: token,
+            path: `userauth/auth/user`,
+          });
+
+          if (data && data.user) {
+            // console.log("Authenticated user:", data.user);
+            return data.user; // Return the user object
+          } else {
+            // console.log("Authentication failed:", data);
+            return null;
+          }
+        } catch (error) {
+          console.error("Error checking auth state:", error);
+          return null;
+        }
+      } else {
+        console.log("No token found");
+        return null;
+      }
+    },
     toggle_mobile_menu_open() {
       this.mobile_menu_open = !this.mobile_menu_open;
     },
@@ -501,7 +530,16 @@ export default {
       this.current_midmenucard = current_card;
     },
   },
-  mounted() {
+  async mounted() {
+    const user = await this.checkAuthState();
+
+    if (user) {
+      //console.log("User is logged in:", user);
+      this.$router.push(`/overview/${user._id}`);
+    } else {
+      return;
+    }
+
     setInterval(() => {
       this.toggle__current_jumbotron_img();
     }, 3000);

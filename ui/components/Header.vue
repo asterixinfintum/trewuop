@@ -55,6 +55,10 @@
 </template>
 
 <script>
+import requester from "@/store/requester";
+
+const { getfromserver } = requester;
+
 import sitename from "@/mixins/sitename";
 
 export default {
@@ -65,9 +69,35 @@ export default {
     };
   },
   methods: {
+    async checkAuthState() {
+      const token = localStorage.getItem("873__jh6bdjklkjhghn");
+
+      if (token) {
+        try {
+          const data = await getfromserver({
+            token: token,
+            path: `userauth/auth/user`,
+          });
+
+          if (data && data.user) {
+            // console.log("Authenticated user:", data.user);
+            return data.user; // Return the user object
+          } else {
+            // console.log("Authentication failed:", data);
+            return null;
+          }
+        } catch (error) {
+          console.error("Error checking auth state:", error);
+          return null;
+        }
+      } else {
+        console.log("No token found");
+        return null;
+      }
+    },
     scrolltodiv({ elementid }) {
       const elemnt = document.getElementById(`${elementid}`);
-      
+
       if (elemnt) {
         elemnt.scrollIntoView({ behavior: "smooth", block: "start" });
       } else {

@@ -77,10 +77,6 @@ async function getfromserver({ token, path }) {
     }
 }
 
-console.log(posttoserver,
-    getfromserver,
-    BASE)
-
 export default {
     posttoserver,
     getfromserver,

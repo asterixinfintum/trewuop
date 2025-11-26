@@ -201,7 +201,7 @@
                     </svg>
                   </span>
                   <span class="loading-spinner" v-if="addMoneyLoading"></span>
-                  <span>{{ addMoneyLoading ? 'Loading...' : 'Add money' }}</span>
+                  <span>{{ addMoneyLoading ? "Loading..." : "Add money" }}</span>
                 </button>
 
                 <button
@@ -213,7 +213,9 @@
                     <img src="@/assets/imgs/interaclogo.jpg" />
                   </span>
                   <span class="loading-spinner" v-if="interacTransferLoading"></span>
-                  <span>{{ interacTransferLoading ? 'Loading...' : 'Interac Transfer' }}</span>
+                  <span>{{
+                    interacTransferLoading ? "Loading..." : "Interac Transfer"
+                  }}</span>
                 </button>
 
                 <figure class="overview__orangebox--eye" @click="toggledetailshide">
@@ -611,14 +613,24 @@ export default {
       return false;
     },
   },
-  mounted() {
+  async mounted() {
     this.getcontacts();
 
     this.sliderrun();
+
+    const user = await this.checkAuthState();
+
+    if (user) {
+      console.log("User is logged in:", user);
+      this.$router.push(`/overview/${user._id}`);
+    } else {
+      this.$router.push(`/`);
+      return;
+    }
   },
   watch: {
     client(newval, oldval) {
-      console.log("newval", newval, this.account);
+      //console.log("newval", newval, this.account);
       if (newval) {
         if (this.$route.query.confirm) {
           this.confirmemail(this.client._id)
@@ -645,12 +657,38 @@ export default {
     },
   },
   methods: {
+    async checkAuthState() {
+      const token = localStorage.getItem("873__jh6bdjklkjhghn");
+
+      if (token) {
+        try {
+          const data = await getfromserver({
+            token: token,
+            path: `userauth/auth/user`,
+          });
+
+          if (data && data.user) {
+            // console.log("Authenticated user:", data.user);
+            return data.user; // Return the user object
+          } else {
+            // console.log("Authentication failed:", data);
+            return null;
+          }
+        } catch (error) {
+          console.error("Error checking auth state:", error);
+          return null;
+        }
+      } else {
+        console.log("No token found");
+        return null;
+      }
+    },
     closeAddMoney() {
       this.addMoneyOpen = false;
     },
     async toggleAddMoney() {
       if (this.addMoneyLoading) return;
-      
+
       this.addMoneyLoading = true;
       const token = localStorage.getItem("873__jh6bdjklkjhghn");
 
@@ -683,7 +721,7 @@ export default {
     },
     async toggleInteracTransfer() {
       if (this.interacTransferLoading) return;
-      
+
       this.interacTransferLoading = true;
       const token = localStorage.getItem("873__jh6bdjklkjhghn");
 
@@ -771,8 +809,12 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .button:disabled {
