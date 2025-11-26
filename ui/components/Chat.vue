@@ -29,20 +29,20 @@ import io from "socket.io-client";
 let CHAT_API = getCurrentPageDomain();
 
 const processTime = (time) => {
-    if (time) {
-        const date = new Date(time);
-        return date.toLocaleString("en-US", {
-            weekday: "long", // "Monday"
-            year: "numeric", // "2024"
-            month: "long", // "May"
-            day: "numeric", // "19"
-            hour: "2-digit", // "11"
-            minute: "2-digit", // "36"
-            second: "2-digit", // "17"
-            hour12: true, // "PM"
-        });
-    }
-}
+  if (time) {
+    const date = new Date(time);
+    return date.toLocaleString("en-US", {
+      weekday: "long", // "Monday"
+      year: "numeric", // "2024"
+      month: "long", // "May"
+      day: "numeric", // "19"
+      hour: "2-digit", // "11"
+      minute: "2-digit", // "36"
+      second: "2-digit", // "17"
+      hour12: true, // "PM"
+    });
+  }
+};
 
 if (CHAT_API.includes("localhost")) {
   CHAT_API = `http://localhost:8082`;
@@ -81,7 +81,7 @@ export default {
   },
   watch: {
     user(newval, oldval) {
-      console.log('user:', user)
+      console.log("user:", user);
       if (newval) {
         this.connectSocket();
       }
@@ -165,10 +165,10 @@ export default {
         time: processTime(isoDateString),
         _id: this.messages.length,
         from: this.currentadmin ? this.currentadmin : null,
-        temp: true
-      }
+        temp: true,
+      };
 
-      this.messages.push(tempMsg)
+      this.messages.push(tempMsg);
 
       this.socket.emit("sendMessage", msgData);
     },
@@ -196,9 +196,9 @@ export default {
           if (data.user === this.user) {
             this.messages.push(data);
 
-            const messages = this.messages.filter(msg => !msg.temp)
+            const messages = this.messages.filter((msg) => !msg.temp);
 
-            this.messages = messages
+            this.messages = messages;
           }
         });
 
@@ -250,6 +250,13 @@ export default {
       right: #{scaleValue(15)};
       top: #{scaleValue(10)};
       z-index: 2;
+
+      @media only screen and (max-width: 414px) {
+        height: #{scaleValue(120)};
+        width: #{scaleValue(120)};
+        top: #{scaleValue(-26)};
+        font-size: #{scaleValue(80)};
+      }
     }
 
     &--svg {
