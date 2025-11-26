@@ -246,6 +246,12 @@ a {
 
     color: $font-white !important;
     font-size: #{scaleValue(10)};
+
+    @media only screen and (max-width: 768px) {
+        font-size: #{scaleValue(60)} !important;
+        height: #{scaleValue(80)};
+        width: #{scaleValue(80)};
+    }
 }
 
 .boxshadowbox {
@@ -448,7 +454,7 @@ a {
     align-items: center;
 
     margin-top: #{scaleValue(30)};
-   // max-height: #{scaleValue(500)};
+    // max-height: #{scaleValue(500)};
     overflow-y: scroll;
 }
 
