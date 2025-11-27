@@ -10,9 +10,8 @@
       class="bubble__body bubble__sender"
       :class="{ bubble__receiver: role === 'receiver' }"
     >
-      <div class="bubble__body--content">
-        {{ content }}
-      </div>
+      <div class="bubble__body--content" v-html="parsedContent"></div>
+
       <div class="bubble__body--time">
         <span></span>
         <span>{{ time }}</span>
@@ -23,8 +22,37 @@
 
 <script>
 export default {
-  props: ["role", "content", "time"], //role being sender or receiver
-  methods: {},
+  props: ["role", "content", "time"],
+
+  computed: {
+    parsedContent() {
+      return this.convertLinks(this.content);
+    },
+  },
+
+  methods: {
+    convertLinks(text) {
+      if (!text) return "";
+
+      // Step 1 — convert URLs to clickable <a> tags
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      let converted = text.replace(urlRegex, (url) => {
+        const safeUrl = url.replace(/"/g, "");
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>`;
+      });
+
+      // Step 2 — split sentences into new lines
+      // Splits on a period followed by space or end of text
+      const sentences = converted.split(/\. +|\.?$/).filter((s) => s.trim() !== "");
+
+      // Step 3 — wrap each in <p> with margin
+      const html = sentences
+        .map((s) => `<p class="bubble-paragraph">${s.trim()}.</p>`)
+        .join("");
+
+      return html;
+    },
+  },
 };
 </script>
 
@@ -91,5 +119,9 @@ export default {
   &__receiver {
     background: $button-blue;
   }
+}
+
+.bubble-paragraph {
+  margin-bottom: #{scaleValue(15)};
 }
 </style>
