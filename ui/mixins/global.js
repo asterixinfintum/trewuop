@@ -136,7 +136,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('auth', ['checkauthdup', 'register', 'login', 'logout', 'showautherror', 'removeautherror', 'getcurrentclient', 'uploadfile', 'confirmemail']),
+        ...mapActions('auth', ['checkauthdup', 'register', 'login', 'logout', 'showautherror', 'removeautherror', 'getcurrentclient', 'uploadfile', 'confirmemail', 'resetPassword']),
         ...mapActions('loading', ['triggerloading', 'endloading', 'onspinner', 'offspinner', 'toggleverbiage', 'setdonemsg']),
         ...mapActions('admin', [
             'adminentry',

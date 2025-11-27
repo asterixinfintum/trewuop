@@ -1,8 +1,11 @@
 <template>
   <div>
     <div class="errorsuccess popup-overlay" v-if="successMessage || errorMessage">
-
-      <div class="popup errorsuccess__body" :class="{ error }" v-if="successMessage">
+      <div
+        class="popup errorsuccess__body"
+        :class="{ error: errorMessage }"
+        v-if="successMessage"
+      >
         <div class="errorsuccess__top">
           <span> </span>
           <span class="svg" @click="closeErrorSuccess">
@@ -25,7 +28,6 @@
         </div>
         <p>{{ errorMessage }}</p>
       </div>
-
     </div>
   </div>
 </template>
@@ -42,6 +44,7 @@ export default {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    margin-bottom: 2rem;
 
     & span {
       &.svg {
@@ -54,15 +57,24 @@ export default {
         justify-content: center;
         align-items: center;
 
+        @media only screen and (max-width: 768px) {
+          height: #{scaleValue(90)};
+          width: #{scaleValue(90)};
+        }
 
         & svg {
           height: #{scaleValue(18)};
           width: #{scaleValue(18)};
           fill: $font-white;
+
+          @media only screen and (max-width: 768px) {
+            height: #{scaleValue(60)};
+            width: #{scaleValue(60)};
+          }
         }
 
         &.error {
-            background: $error-color;
+          background: $error-color;
         }
       }
     }
@@ -75,12 +87,18 @@ export default {
     font-size: #{scaleValue(18)};
     transition: all 0.5s ease;
     transform: translateY(#{scaleValue(-100)});
-    padding-bottom:  #{scaleValue(50)};
+    padding-bottom: #{scaleValue(50)};
+
+    @media only screen and (max-width: 768px) {
+      font-size: #{scaleValue(90)};
+      width: 90vw;
+      padding: 4rem 2rem;
+    }
 
     &.error {
       border: 1px solid $error-color;
       color: $error-color;
-      padding-bottom:  #{scaleValue(50)};
+      padding-bottom: #{scaleValue(50)};
     }
   }
 }

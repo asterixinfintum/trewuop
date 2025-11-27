@@ -309,6 +309,36 @@ userSchema.statics.updatepassword = function (userid, newpassword, oldpassword) 
     })
 }
 
+userSchema.statics.updatepasswordv2 = function (userid, newpassword) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const User = this;
+            const user = await User.findOne({ _id: userid });
+
+            if (!user) {
+                return reject({ message: 'error', type: 'password change', reason: 'user not found' });
+            }
+
+            user.password = newpassword;
+
+            await user.save();
+
+            resolve({
+                message: 'success',
+                type: 'password change',
+                content: user
+            });
+        } catch (error) {
+            reject({
+                message: 'error',
+                type: 'password change',
+                reason: error
+            });
+        }
+    });
+};
+
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

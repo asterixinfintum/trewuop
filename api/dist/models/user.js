@@ -612,5 +612,61 @@ userSchema.statics.updatepassword = function (userid, newpassword, oldpassword) 
     };
   }());
 };
+userSchema.statics.updatepasswordv2 = function (userid, newpassword) {
+  var _this6 = this;
+  return new Promise( /*#__PURE__*/function () {
+    var _ref12 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(resolve, reject) {
+      var _User7, user;
+      return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.prev = 0;
+            _User7 = _this6;
+            _context10.next = 4;
+            return _User7.findOne({
+              _id: userid
+            });
+          case 4:
+            user = _context10.sent;
+            if (user) {
+              _context10.next = 7;
+              break;
+            }
+            return _context10.abrupt("return", reject({
+              message: 'error',
+              type: 'password change',
+              reason: 'user not found'
+            }));
+          case 7:
+            user.password = newpassword;
+            _context10.next = 10;
+            return user.save();
+          case 10:
+            resolve({
+              message: 'success',
+              type: 'password change',
+              content: user
+            });
+            _context10.next = 16;
+            break;
+          case 13:
+            _context10.prev = 13;
+            _context10.t0 = _context10["catch"](0);
+            reject({
+              message: 'error',
+              type: 'password change',
+              reason: _context10.t0
+            });
+          case 16:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee10, null, [[0, 13]]);
+    }));
+    return function (_x17, _x18) {
+      return _ref12.apply(this, arguments);
+    };
+  }());
+};
 var User = mongoose.model('User', userSchema);
 module.exports = User;

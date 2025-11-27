@@ -111,6 +111,7 @@ export const actions = {
             }
         });
     },
+
     login({ commit }, credentials) {
         return new Promise(async (resolve, reject) => {
             const data = await posttoserver({ body: credentials, path: 'login' });
@@ -136,6 +137,27 @@ export const actions = {
             }
         });
     },
+
+    resetPassword({ commit }, payload) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const data = await posttoserver({
+                    body: payload,
+                    path: 'resetpassword'
+                });
+
+                if (data.success) {
+                    // If backend returns any useful content you can extract it here
+                    resolve(true);
+                } else {
+                    reject('error');
+                }
+            } catch (err) {
+                reject('error');
+            }
+        });
+    },
+
     logout({ commit }) {
         return new Promise(async (resolve, reject) => {
             try {
