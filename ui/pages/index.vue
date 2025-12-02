@@ -439,7 +439,8 @@
                       <p>
                         Munnver Capital delivers trusted, innovative financial solutions
                         to help individuals and businesses achieve their goals. Your
-                        success is our mission.
+                        success is our mission. Our address is at Sondanella 70 1772
+                        Guéravet Switzerland
                       </p>
                     </div>
                   </div>
