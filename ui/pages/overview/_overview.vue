@@ -85,6 +85,12 @@
                   src="@/assets/imgs/cardback.jpg"
                   class="overview__card--background"
                 />
+
+                <img
+                  src="/teembd.webp"
+                  class="overview__card--background tru"
+                />
+
                 <figure class="overview__card--platformlogo">
                   <img src="@/assets/imgs/logo-nobackground.png" />
                 </figure>
@@ -112,6 +118,12 @@
                   src="@/assets/imgs/cardback.jpg"
                   class="overview__card--background"
                 />
+
+                <img
+                  src="/teembd.webp"
+                  class="overview__card--background tru"
+                />
+
                 <figure class="overview__card--platformlogo">
                   <img src="@/assets/imgs/logo-nobackground.png" />
                 </figure>

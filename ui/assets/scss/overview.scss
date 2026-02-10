@@ -85,6 +85,14 @@ $overview-area-padding: #{scaleValue(30)};
                 border-radius: 1rem;
                 transform: translateX(#{scaleValue(26)});
             }
+
+            &.tru {
+                position: absolute;
+                transform: scale(.3);
+                right: 0;
+                top: 0;
+                object-fit: contain;
+            }
         }
 
         &--platformlogo {
@@ -725,7 +733,7 @@ $overview-area-padding: #{scaleValue(30)};
         color: $font-white;
 
         width: #{scaleValue(390)};
-        
+
 
         @media only screen and (max-width: 768px) {
             height: #{scaleValue(1900)};
